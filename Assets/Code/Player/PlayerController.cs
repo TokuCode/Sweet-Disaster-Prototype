@@ -43,15 +43,6 @@ public class PlayerController : Controller
     
     private void Awake()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _collider2D = GetComponent<CapsuleCollider2D>();
-        _groundCheck = GetComponent<PlayerGroundCheck>();
-        _movement = GetComponent<PlayerMovement>();
-        _jump = GetComponent<PlayerJump>();
-        _friction = GetComponent<PlayerFriction>();
-        _crouching = GetComponent<PlayerCrouching>();
-        _speed = GetComponent<PlayerSpeedManagement>();
-        
         _controls = new PlayerControls();
         
         _controls.Gameplay.Move.performed += OnMoveInput;
@@ -73,7 +64,7 @@ public class PlayerController : Controller
     private void OnEnable() => _controls.Enable();
     private void OnDisable() => _controls.Disable();
 
-    public Vector3 Position => transform.position;
+    public Vector3 CenterPosition => transform.position + Vector3.up * Size.y / 2;
 
     public Vector3 LocalScale
     {
@@ -91,6 +82,12 @@ public class PlayerController : Controller
     {
         get => _rigidbody2D.linearVelocity;
         set => _rigidbody2D.linearVelocity = value;
+    }
+    
+    public float GravrityScale
+    {
+        get => _rigidbody2D.gravityScale;
+        set => _rigidbody2D.gravityScale = value;
     }
 
     public void AddForce(Vector2 force) => _rigidbody2D.AddForce(force);

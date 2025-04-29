@@ -9,6 +9,7 @@ public class PlayerCrouching : Feature
     [Header("Crouch Parameters")]
     [SerializeField] private float _crouchHeightMultiplier;
     [SerializeField] private float _initialYScale;
+    [SerializeField] private float _initialXSize;
     [SerializeField] private float _initialYSize;
     
     [Header("Runtime")]
@@ -31,6 +32,7 @@ public class PlayerCrouching : Feature
     {
         _playerController = (PlayerController)controller;
         _initialYScale = _playerController.LocalScale.y;
+        _initialXSize = _playerController.Size.x;
         _initialYSize = _playerController.Size.y;
         _playerController.OnCrouchInputEvent += OnCrouchInput;
     }
@@ -68,13 +70,12 @@ public class PlayerCrouching : Feature
     private void CrouchAction()
     {
         _playerController.LocalScale = new Vector2(_playerController.LocalScale.x, _initialYScale * _crouchHeightMultiplier);
-        _playerController.Size = new Vector2(_playerController.Size.x, _initialYSize * _crouchHeightMultiplier);
-        _playerController.AddImpulse(Vector2.down * 10f);
+        _playerController.Size = new Vector2(_initialXSize * _crouchHeightMultiplier, _initialYSize * _crouchHeightMultiplier);
     }
 
     private void UnCrouchAction()
     { 
         _playerController.LocalScale = new Vector2(_playerController.LocalScale.x, _initialYScale);  
-        _playerController.Size = new Vector2(_playerController.Size.x, _initialYSize);
+        _playerController.Size = new Vector2(_initialXSize, _initialYSize);
     } 
 }

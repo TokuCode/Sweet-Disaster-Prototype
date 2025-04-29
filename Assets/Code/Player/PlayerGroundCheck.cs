@@ -3,6 +3,7 @@
 public class PlayerGroundCheck : Feature
 {
     private const float _extraDistance = .01f;
+    private const float _extraDistanceSlopeCheck = 1f;
     
     private PlayerController _playerController;
     
@@ -37,7 +38,7 @@ public class PlayerGroundCheck : Feature
 
     private void GroundCheck()
     {
-        var position = _playerController.Position;
+        var position = _playerController.CenterPosition;
         var size = _playerController.Size;
 
         var footSize = new Vector2(size.x / 2, _extraDistance);
@@ -51,9 +52,9 @@ public class PlayerGroundCheck : Feature
 
     private void SlopeCheck()
     {
-        var position = _playerController.Position;
+        var position = _playerController.CenterPosition;
         var size = _playerController.Size;
-        var distance = size.y / 2 + _extraDistance;
+        var distance = size.y / 2 + _extraDistanceSlopeCheck;
 
         _slopeHit = Physics2D.Raycast(position, Vector2.down, distance, _groundLayer);
 
@@ -80,7 +81,7 @@ public class PlayerGroundCheck : Feature
             return;
         }
         
-        var position = _playerController.Position;
+        var position = _playerController.CenterPosition;
         var size = _playerController.Size;
 
         var headSize = new Vector2(size.x / 2, _extraDistance);

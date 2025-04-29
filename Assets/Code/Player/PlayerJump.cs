@@ -47,6 +47,8 @@ public class PlayerJump : Feature
         {
             if(_jumpCooldownTimer > 0) _jumpCooldownTimer -= Time.deltaTime;
             else if(_playerController.IsGrounded) _onDeparture = false;
+            
+            _playerController.GravrityScale = _playerController.OnSlope ? 0f : 1f;
         }
         else if (context == UpdateContext.FixedUpdate)
             BetterJump();
@@ -68,7 +70,7 @@ public class PlayerJump : Feature
 
     private void BetterJump()
     {
-        if(_playerController.IsGrounded) return;
+        if(_playerController.IsGrounded && !_playerController.OnSlope) return;
         
         if(_playerController.Velocity.y < 0)
             _playerController.AddImpulse(Vector2.up * Physics2D.gravity.y * (_fallGravityMultiplier - 1) * Time.fixedDeltaTime);
