@@ -4,6 +4,7 @@ public class PlayerGroundCheck : Feature
 {
     private const float _extraDistance = .01f;
     private const float _extraDistanceSlopeCheck = 1f;
+    private const float _extraDistanceHeadBlock = .1f;
     
     private PlayerController _playerController;
     
@@ -84,8 +85,8 @@ public class PlayerGroundCheck : Feature
         var position = _playerController.CenterPosition;
         var size = _playerController.Size;
 
-        var headSize = new Vector2(size.x / 2, _extraDistance);
-        var distance = size.y * 1.5f + _extraDistance;
+        var headSize = new Vector2(size.x / 2, _extraDistanceHeadBlock);
+        var distance = size.y * 1.5f + _extraDistanceHeadBlock;
 
         RaycastHit2D hit2D = Physics2D.BoxCast(position, headSize, 0f, Vector2.up, distance, _groundLayer);
         

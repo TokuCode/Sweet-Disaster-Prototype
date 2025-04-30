@@ -28,18 +28,35 @@ public class PlayerController : Controller
     [SerializeField] private PlayerSpeedManagement _speed;
     public float MaxSpeed => _speed.MaxSpeed;
     public float Acceleration => _speed.Acceleration;
+    [SerializeField] private PlayerHandle _handle;
+    public Vector3 HandlePosition => _handle.HandlePosition;
+    public Vector3 HandleDirection => _handle.HandleDirection;
+    [SerializeField] private PlayerShoot _shooting;
+    public bool IsShooting => _shooting.IsShooting;
+    public bool IsReloading => _shooting.IsReloading;
+    public int MagazineSize => _shooting.MagazineSize;
+    public int CurrentAmmo => _shooting.CurrentAmmo;
+    public float LastShotTime => _shooting.LastShotTime;
     
     [Header("References")]
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private CapsuleCollider2D _collider2D;
+    [SerializeField] private Camera _mainCamera;
     
-    public event Action<InputAction.CallbackContext> OnMoveInputEvent;
-    public event Action<InputAction.CallbackContext> OnJumpInputEvent;
-    public event Action<InputAction.CallbackContext> OnCrouchInputEvent;
+    public delegate void OnInputEvent(InputAction.CallbackContext context);
+    public event OnInputEvent OnMoveInputEvent;
+    public event OnInputEvent OnJumpInputEvent;
+    public event OnInputEvent OnCrouchInputEvent;
+    public event OnInputEvent OnAimInputEvent; 
+    public event OnInputEvent OnShootInputEvent;
+    public event OnInputEvent OnReloadInputEvent;
     
     private void OnMoveInput(InputAction.CallbackContext context) => OnMoveInputEvent?.Invoke(context);
     private void OnJumpInput(InputAction.CallbackContext context) => OnJumpInputEvent?.Invoke(context);
     private void OnCrouchInput(InputAction.CallbackContext context) => OnCrouchInputEvent?.Invoke(context);
+    private void OnAimInput(InputAction.CallbackContext context) => OnAimInputEvent?.Invoke(context);
+    private void OnShootInput(InputAction.CallbackContext context) => OnShootInputEvent?.Invoke(context);
+    private void OnReloadInput(InputAction.CallbackContext context) => OnReloadInputEvent?.Invoke(context);
     
     private void Awake()
     {
@@ -51,6 +68,12 @@ public class PlayerController : Controller
         _controls.Gameplay.Jump.canceled += OnJumpInput;
         _controls.Gameplay.Crouch.performed += OnCrouchInput;
         _controls.Gameplay.Crouch.canceled += OnCrouchInput;
+        _controls.Gameplay.Aim.performed += OnAimInput;
+        _controls.Gameplay.Aim.canceled += OnAimInput;
+        _controls.Gameplay.Shoot.performed += OnShootInput;
+        _controls.Gameplay.Shoot.canceled += OnShootInput;
+        _controls.Gameplay.Reload.performed += OnReloadInput;
+        _controls.Gameplay.Reload.canceled += OnReloadInput;
         
         _features = new List<Feature>();
         _features.Add(_groundCheck);
@@ -59,6 +82,8 @@ public class PlayerController : Controller
         _features.Add(_friction);
         _features.Add(_crouching);
         _features.Add(_speed);
+        _features.Add(_handle);
+        _features.Add(_shooting);
     }
 
     private void OnEnable() => _controls.Enable();
@@ -88,6 +113,13 @@ public class PlayerController : Controller
     {
         get => _rigidbody2D.gravityScale;
         set => _rigidbody2D.gravityScale = value;
+    }
+
+    public Vector3 ScreenToWorldPoint(Vector2 screenPoint)
+    { 
+        var worldPoint = _mainCamera.ScreenToWorldPoint(screenPoint);   
+        worldPoint.z = 0;
+        return worldPoint;
     }
 
     public void AddForce(Vector2 force) => _rigidbody2D.AddForce(force);
