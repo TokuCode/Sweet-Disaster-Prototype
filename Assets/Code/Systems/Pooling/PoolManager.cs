@@ -56,6 +56,7 @@ public class PoolManager : MonoBehaviour
     private PoolInstance AddInstance()
     {
         var instance = CreateNewInstance();
+        instance.Reset();
         _poolInstances.Add(instance);
         return instance;
     }

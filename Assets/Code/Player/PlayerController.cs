@@ -37,6 +37,12 @@ public class PlayerController : Controller
     public int MagazineSize => _shooting.MagazineSize;
     public int CurrentAmmo => _shooting.CurrentAmmo;
     public float LastShotTime => _shooting.LastShotTime;
+    [SerializeField] private PlayerBomb _bomb;
+    public bool IsThrowing => _bomb.IsThrowing;
+    public bool IsThrowOnCooldown => _bomb.IsOnCooldown;
+    public int BombCount => _bomb.BombCount;
+    public float ThrowChargeTimeSeconds => _bomb.ThrowChargeTimeSeconds;
+    public float ThrowChargeTimer => _bomb.ThrowChargeTimer;
     
     [Header("References")]
     [SerializeField] private Rigidbody2D _rigidbody2D;
@@ -49,6 +55,7 @@ public class PlayerController : Controller
     public event OnInputEvent OnCrouchInputEvent;
     public event OnInputEvent OnAimInputEvent; 
     public event OnInputEvent OnShootInputEvent;
+    public event OnInputEvent OnThrowInputEvent;
     public event OnInputEvent OnReloadInputEvent;
     
     private void OnMoveInput(InputAction.CallbackContext context) => OnMoveInputEvent?.Invoke(context);
@@ -56,6 +63,7 @@ public class PlayerController : Controller
     private void OnCrouchInput(InputAction.CallbackContext context) => OnCrouchInputEvent?.Invoke(context);
     private void OnAimInput(InputAction.CallbackContext context) => OnAimInputEvent?.Invoke(context);
     private void OnShootInput(InputAction.CallbackContext context) => OnShootInputEvent?.Invoke(context);
+    private void OnThrowInput(InputAction.CallbackContext context) => OnThrowInputEvent?.Invoke(context);
     private void OnReloadInput(InputAction.CallbackContext context) => OnReloadInputEvent?.Invoke(context);
     
     private void Awake()
@@ -72,6 +80,8 @@ public class PlayerController : Controller
         _controls.Gameplay.Aim.canceled += OnAimInput;
         _controls.Gameplay.Shoot.performed += OnShootInput;
         _controls.Gameplay.Shoot.canceled += OnShootInput;
+        _controls.Gameplay.Throw.performed += OnThrowInput;
+        _controls.Gameplay.Throw.canceled += OnThrowInput;
         _controls.Gameplay.Reload.performed += OnReloadInput;
         _controls.Gameplay.Reload.canceled += OnReloadInput;
         
@@ -84,6 +94,7 @@ public class PlayerController : Controller
         _features.Add(_speed);
         _features.Add(_handle);
         _features.Add(_shooting);
+        _features.Add(_bomb);
     }
 
     private void OnEnable() => _controls.Enable();

@@ -19,8 +19,6 @@ public class ObjectBullet : MonoBehaviour
         }
     }
     [SerializeField] private float _lifeTimeTimer;
-    
-    [Header("Bullet Exposed Parameters")]
     [SerializeField] private int _damage;
     public int Damage
     {
@@ -44,11 +42,6 @@ public class ObjectBullet : MonoBehaviour
     {
         get => _direction;
         set => _direction = value;
-    }
-
-    private void Start()
-    {
-        PoolReset();
     }
 
     public void PoolReset()

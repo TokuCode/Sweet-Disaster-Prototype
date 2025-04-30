@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 
-public class AmmoGauga : MonoBehaviour
+public class AmmoGauge : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerController _playerController;
