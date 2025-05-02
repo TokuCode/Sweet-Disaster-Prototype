@@ -65,11 +65,13 @@ public class PlayerController : Controller
     private void OnShootInput(InputAction.CallbackContext context) => OnShootInputEvent?.Invoke(context);
     private void OnThrowInput(InputAction.CallbackContext context) => OnThrowInputEvent?.Invoke(context);
     private void OnReloadInput(InputAction.CallbackContext context) => OnReloadInputEvent?.Invoke(context);
-    
+
     private void Awake()
     {
         _controls = new PlayerControls();
-        
+
+        _mainCamera = Camera.main;
+
         _controls.Gameplay.Move.performed += OnMoveInput;
         _controls.Gameplay.Move.canceled += OnMoveInput;
         _controls.Gameplay.Jump.performed += OnJumpInput;
@@ -84,7 +86,7 @@ public class PlayerController : Controller
         _controls.Gameplay.Throw.canceled += OnThrowInput;
         _controls.Gameplay.Reload.performed += OnReloadInput;
         _controls.Gameplay.Reload.canceled += OnReloadInput;
-        
+
         _features = new List<Feature>();
         _features.Add(_groundCheck);
         _features.Add(_movement);
@@ -95,10 +97,29 @@ public class PlayerController : Controller
         _features.Add(_handle);
         _features.Add(_shooting);
         _features.Add(_bomb);
+
+        _controls.Disable();
     }
 
-    private void OnEnable() => _controls.Enable();
-    private void OnDisable() => _controls.Disable();
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            _controls.Enable();
+        }
+        base.OnNetworkSpawn();
+    }
+
+    private void OnEnable()
+    {
+        if (IsOwner)
+            _controls.Enable();
+    }
+    private void OnDisable()
+    {
+        if (IsOwner)
+            _controls.Disable();
+    }
 
     public Vector3 CenterPosition => transform.position + Vector3.up * Size.y / 2;
 

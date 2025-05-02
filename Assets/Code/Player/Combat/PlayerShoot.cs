@@ -43,6 +43,11 @@ public class PlayerShoot : Feature
     [Header("Input")] 
     [SerializeField] private bool _shootHoldInput;
 
+    private void Awake()
+    {
+        //_projectilePool = FindFirstObjectByType<PoolManager>();
+    }
+
     public void OnShootInput(InputAction.CallbackContext context)
     {
         if (context.performed)

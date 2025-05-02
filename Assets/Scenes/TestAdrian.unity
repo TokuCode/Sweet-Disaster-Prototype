@@ -637,7 +637,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 605203468}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 802212801}
+        m_TargetAssemblyTypeName: ConnectUIScript, Assembly-CSharp
+        m_MethodName: HostButtonOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &605203468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -771,6 +783,7 @@ GameObject:
   - component: {fileID: 802212800}
   - component: {fileID: 802212799}
   - component: {fileID: 802212798}
+  - component: {fileID: 802212801}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -864,6 +877,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &802212801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 802212797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6123868bc27a3b4ba772f7dd7bdd500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1024153319
 GameObject:
   m_ObjectHideFlags: 0
@@ -1277,7 +1302,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1442654599}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 802212801}
+        m_TargetAssemblyTypeName: ConnectUIScript, Assembly-CSharp
+        m_MethodName: ClientButtonOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1442654599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1481,6 +1518,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2284795922285434694, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4130283612184942623, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3923807260
+      objectReference: {fileID: 0}
+    - target: {fileID: 4130283612184942623, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4130283612184942623, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1592087709
+      objectReference: {fileID: 0}
     - target: {fileID: 4757247637268342414, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6
@@ -1528,101 +1581,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2284795922285434694, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1498774992}
-    - targetCorrespondingSourceObject: {fileID: 2284795922285434694, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1498774993}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
 --- !u!114 &1498774990 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8961035262428396496, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
   m_PrefabInstance: {fileID: 1498774989}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1498774991}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a68495f10d44c143925915d429ae0a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1498774991 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2284795922285434694, guid: 07c925de3c318f14bbd84d6e96240b1d, type: 3}
-  m_PrefabInstance: {fileID: 1498774989}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1498774992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1498774991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3198106493
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
---- !u!114 &1498774993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1498774991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 733a1dc719e735140849ab4716d30e50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 1
-  AutoOwnerAuthorityTickOffset: 1
-  PositionInterpolationType: 0
-  RotationInterpolationType: 0
-  ScaleInterpolationType: 0
-  PositionLerpSmoothing: 1
-  PositionMaxInterpolationTime: 0.1
-  RotationLerpSmoothing: 1
-  RotationMaxInterpolationTime: 0.1
-  ScaleLerpSmoothing: 1
-  ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 0
-  TickSyncChildren: 0
-  UseUnreliableDeltas: 0
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
-  SyncRotAngleZ: 0
-  SyncScaleX: 0
-  SyncScaleY: 1
-  SyncScaleZ: 0
-  PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 0
-  SwitchTransformSpaceWhenParented: 0
-  Interpolate: 1
-  SlerpPosition: 0
 --- !u!1 &1663245736
 GameObject:
   m_ObjectHideFlags: 0

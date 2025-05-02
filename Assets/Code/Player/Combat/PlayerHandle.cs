@@ -42,15 +42,15 @@ public class PlayerHandle : Feature
         _handlePosition = playerPosition + _handleDirection * _handleDistance;
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (!Application.isPlaying) return;
+    //private void OnDrawGizmosSelected()
+    //{
+    //    if (!Application.isPlaying) return;
         
-        var playerPosition = _playerController.CenterPosition + Vector3.up * _handleHeight;
+    //    var playerPosition = _playerController.CenterPosition + Vector3.up * _handleHeight;
         
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(playerPosition, _handleDistance);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(_handlePosition, .1f);
-    }
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(playerPosition, _handleDistance);
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(_handlePosition, .1f);
+    //}
 }
