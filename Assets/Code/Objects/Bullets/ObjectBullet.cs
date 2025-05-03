@@ -8,6 +8,12 @@ public class ObjectBullet : MonoBehaviour
     [SerializeField] private PoolInstanceBullet _poolInstanceBullet;
 
     [Header("Bullet Parameters")]
+    [SerializeField] private string _enemyTag;
+    public string EnemyTag
+    {
+        get => _enemyTag;
+        set => _enemyTag = value;
+    }
     [SerializeField] private float _lifeTime;
     public float LifeTime
     {
@@ -19,8 +25,8 @@ public class ObjectBullet : MonoBehaviour
         }
     }
     [SerializeField] private float _lifeTimeTimer;
-    [SerializeField] private int _damage;
-    public int Damage
+    [SerializeField] private float _damage;
+    public float Damage
     {
         get => _damage;
         set => _damage = value;
@@ -50,6 +56,7 @@ public class ObjectBullet : MonoBehaviour
         _direction = Vector2.zero;
         _rigidbody2D.linearVelocity = Vector2.zero;
         transform.localPosition = Vector2.zero;
+        _enemyTag = string.Empty;
     }
     
     private void Update()
@@ -66,6 +73,21 @@ public class ObjectBullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        if (other.gameObject.CompareTag("Player") && _enemyTag.Equals("Player"))
+        {
+            PlayerController player = other.gameObject.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.Attack(new ()
+                {
+                    DamagePercentage = Damage,
+                    KnockbackLevel = KnockbackLevel,
+                    SourcePosition = transform.position
+                });
+                PoolDestroy();
+            }
+        }
+        
         PoolDestroy();
     }
 

@@ -6,6 +6,10 @@ public class PlayerShoot : Feature
 {
     private PlayerController _playerController;
 
+    [Header("Control")] 
+    [SerializeField] private bool _active;
+    public bool Active => _active;
+
     [Header("Shooting Parameters")]
     [SerializeField] private float _timeBetweenShots;
     [SerializeField] private int _burstCount;
@@ -30,7 +34,7 @@ public class PlayerShoot : Feature
     [SerializeField] private PoolManager _projectilePool;
     [SerializeField] private float _bulletSpeed;
     [SerializeField] private float _bulletLifeTime;
-    [SerializeField] private int _bulletDamage;
+    [SerializeField] private float _bulletDamage;
     [SerializeField] private int _bulletKnocbackLevel;
 
     [Header("Trajectory Parameters")]
@@ -83,8 +87,9 @@ public class PlayerShoot : Feature
 
     private void StartShootingEval()
     {
-        bool canShootInternal = _currentAmmo > 0 & Time.time - _lastShotTime > _timeBetweenBursts & !_isShooting & !_isReloading;
-        bool canShootExternal = !_playerController.IsCrouching;
+        bool canShootInternal = _currentAmmo > 0 & Time.time - _lastShotTime > _timeBetweenBursts & !_isShooting & !_isReloading && _active;
+        bool canShootExternal = !_playerController.IsCrouching && !_playerController.IsThrowing &&
+                                !_playerController.IsShieldActive && !_playerController.IsStunned;
         if (canShootInternal && canShootExternal)
             StartCoroutine(ShootingSequence());
         else if(_currentAmmo <= 0) TryReload();
@@ -114,6 +119,7 @@ public class PlayerShoot : Feature
         var instance = _projectilePool.Request();
         var bullet = instance.RenderObject.GetComponent<ObjectBullet>();
         
+        bullet.EnemyTag = "Enemy";
         bullet.transform.position = _playerController.HandlePosition;
         bullet.LifeTime = _bulletLifeTime;
         bullet.Damage = _bulletDamage;
@@ -156,4 +162,6 @@ public class PlayerShoot : Feature
     }
     
     private void ReloadAction() => _currentAmmo = _magazineSize;
+    
+    public void SetActive(bool active) => _active = active;
 }

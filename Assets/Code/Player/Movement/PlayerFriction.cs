@@ -32,6 +32,9 @@ public class PlayerFriction : Feature
     private void ManageFriction()
     {
         _applyingFriction = false;
+
+        if (_playerController.IsStunned) return;
+        
         if(!_playerController.IsGrounded)
             ApplyFriction(_airFriction);
         else if(IsTurning || _horizontalInput == 0)

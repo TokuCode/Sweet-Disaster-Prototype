@@ -17,7 +17,7 @@ public class AmmoGauge : MonoBehaviour
         {
             if (_playerController.IsReloading)
             {
-                _ammoText.text = "Reloading...";
+                _ammoText.text = "Reloading";
                 return;
             }
             

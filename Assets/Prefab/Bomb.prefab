@@ -213,7 +213,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 0.4
 --- !u!50 &4324161440736764800
 Rigidbody2D:
   serializedVersion: 5
@@ -229,7 +229,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: 86dd6994946b48c4ea227d8b02decf9e, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -253,13 +253,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b7214c6ac447d090d2e2b5ed760218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider2D: {fileID: 5642679187436389209}
   _rigidbody2D: {fileID: 4324161440736764800}
   _poolInstanceBomb: {fileID: 4459100945467407863}
   _explosionEffect: {fileID: 2360308938267846018}
   _maxSlopeAngle: 60
   _explosionPersistenceTime: 0.65
-  _collisionSimetryCoefficient: 1.2
-  _explosionArea: 1
+  _collisionSimetryCoefficient: 1.05
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _attackLayer:
+    serializedVersion: 2
+    m_Bits: 3072
+  _explosionRadius: 0
   _explosionDamageInCenter: 0
   _explosionDamageInBorder: 0
   _knockbackLevelInCenter: 0

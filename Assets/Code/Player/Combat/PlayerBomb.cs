@@ -6,6 +6,10 @@ public class PlayerBomb : Feature
 {
     private PlayerController _playerController;
     
+    [Header("Control")] 
+    [SerializeField] private bool _active;
+    public bool Active => _active;
+    
     [FormerlySerializedAs("_throwChargeTime")]
     [Header("Throw Parameters")] 
     [SerializeField] private float _throwChargeTimeSeconds;
@@ -30,8 +34,8 @@ public class PlayerBomb : Feature
     [SerializeField] private float _explosionArea;
     [SerializeField] private float _explosionDamageInCenter;
     [SerializeField] private float _explosionDamageInBorder;
-    [SerializeField] private float _knockbackLevelInCenter;
-    [SerializeField] private float _knockbackLevelInBorder;
+    [SerializeField] private int _knockbackLevelInCenter;
+    [SerializeField] private int _knockbackLevelInBorder;
 
     public void OnThrowInput(InputAction.CallbackContext context)
     {
@@ -44,7 +48,7 @@ public class PlayerBomb : Feature
     public override void InitializeFeature(Controller controller)
     {
         _playerController = (PlayerController)controller;
-        _playerController.OnThrowInputEvent += OnThrowInput;
+        _playerController.OnShootInputEvent += OnThrowInput;
     }
 
     public override void UpdateFeature(UpdateContext context)
@@ -62,8 +66,8 @@ public class PlayerBomb : Feature
 
     private void StartThrowing()
     {
-        bool canThrowInternal = _bombCount > 0 && !_isOnCooldown && !_isThrowing;
-        bool canThrowExternal = !_playerController.IsShooting && !_playerController.IsCrouching;
+        bool canThrowInternal = _bombCount > 0 && !_isOnCooldown && !_isThrowing && _active;
+        bool canThrowExternal = !_playerController.IsShooting && !_playerController.IsCrouching && !_playerController.IsReloading && !_playerController.IsShieldActive && !_playerController.IsStunned;
         if (canThrowInternal && canThrowExternal)
         {
             _isThrowing = true;
@@ -105,7 +109,7 @@ public class PlayerBomb : Feature
         var bomb = instance.RenderObject.GetComponent<ObjectBomb>();
         
         bomb.transform.position = position;
-        bomb.ExplosionArea = _explosionArea;
+        bomb.ExplosionRadius = _explosionArea;
         bomb.ExplosionDamageInCenter = _explosionDamageInCenter;
         bomb.ExplosionDamageInBorder = _explosionDamageInBorder;
         bomb.KnockbackLevelInCenter = _knockbackLevelInCenter;
@@ -113,4 +117,6 @@ public class PlayerBomb : Feature
         
         bomb.AddImpulse(direction.normalized * throwForce);
     }
+
+    public void SetActive(bool active) => _active = active;
 }

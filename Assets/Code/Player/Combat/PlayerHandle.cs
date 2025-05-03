@@ -12,6 +12,9 @@ public class PlayerHandle : Feature
     
     [Header("Input")] 
     [SerializeField] private Vector2 _mousePosition;
+    [SerializeField] private bool _changeWeaponInput;
+    [SerializeField] private float _changeWeaponCooldown;
+    [SerializeField] private float _changeWeaponTimer;
     
     [Header("Runtime")]
     [SerializeField] private Vector3 _handlePosition;
@@ -20,17 +23,24 @@ public class PlayerHandle : Feature
     public Vector3 HandleDirection => _handleDirection;
 
     public void OnAimInput(InputAction.CallbackContext context) => _mousePosition = context.ReadValue<Vector2>();
+    public void OnChangeWeaponInput(InputAction.CallbackContext context) => _changeWeaponInput = context.ReadValue<Vector2>().y != 0;
 
     public override void InitializeFeature(Controller controller)
     {
         _playerController = (PlayerController)controller;
         _playerController.OnAimInputEvent += OnAimInput;
+        _playerController.OnChangeWeaponInputEvent += OnChangeWeaponInput;
     }
 
     public override void UpdateFeature(UpdateContext context)
     {
-        if(context == UpdateContext.Update)
+        if (context == UpdateContext.Update)
+        {
             CalculateHandlePosition();
+
+            if (_changeWeaponTimer > 0) _changeWeaponTimer -= Time.deltaTime;
+            else if (_changeWeaponInput && !_playerController.IsShieldActive) ChangeWeapon();
+        }
     }
 
     private void CalculateHandlePosition()
@@ -52,5 +62,11 @@ public class PlayerHandle : Feature
         Gizmos.DrawWireSphere(playerPosition, _handleDistance);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_handlePosition, .1f);
+    }
+
+    private void ChangeWeapon()
+    {
+        _playerController.SetBombActive(_playerController.IsShootingActive);
+        _playerController.SetShootActive(!_playerController.IsShootingActive);
     }
 }
