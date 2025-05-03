@@ -15,7 +15,7 @@ public class PlayerCrouching : Feature
     [Header("Runtime")]
     [SerializeField] private bool _isCrouching;
     public bool IsCrouching => _isCrouching;
-    public bool CanCrouch => _playerController.IsGrounded && !_playerController.OnDeparture;
+    public bool CanCrouch => _playerController.IsGrounded && !_playerController.OnDeparture && !_playerController.IsStunned;
     [SerializeField] private bool _startingCrouch;
     public bool StartingCrouch => _startingCrouch;
 

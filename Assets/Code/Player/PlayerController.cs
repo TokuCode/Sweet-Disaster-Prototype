@@ -32,17 +32,39 @@ public class PlayerController : Controller
     public Vector3 HandlePosition => _handle.HandlePosition;
     public Vector3 HandleDirection => _handle.HandleDirection;
     [SerializeField] private PlayerShoot _shooting;
+    public bool IsShootingActive => _shooting.Active;
+    public void SetShootActive(bool active) => _shooting.SetActive(active);
     public bool IsShooting => _shooting.IsShooting;
     public bool IsReloading => _shooting.IsReloading;
     public int MagazineSize => _shooting.MagazineSize;
     public int CurrentAmmo => _shooting.CurrentAmmo;
     public float LastShotTime => _shooting.LastShotTime;
     [SerializeField] private PlayerBomb _bomb;
+    public bool IsBombActive => _bomb.Active;
+    public void SetBombActive(bool active) => _bomb.SetActive(active);
     public bool IsThrowing => _bomb.IsThrowing;
     public bool IsThrowOnCooldown => _bomb.IsOnCooldown;
     public int BombCount => _bomb.BombCount;
     public float ThrowChargeTimeSeconds => _bomb.ThrowChargeTimeSeconds;
     public float ThrowChargeTimer => _bomb.ThrowChargeTimer;
+    [SerializeField] private PlayerHealth _health;
+    public float Health => _health.Health;
+    public float BaseHealth => _health.BaseHealth;
+    public float HealthRatio => _health.HealthRatio;
+    public bool IsStunned => _health.IsStunned;
+    public Pipeline<AttackEvent> AttackPipeline => _health.AttackPipeline;
+    public event EventHandler<OnHealthChangedEventArgs> OnHealthChanged
+    {
+        add => _health.OnHealthChanged += value;
+        remove => _health.OnHealthChanged -= value;
+    }
+    public void Attack(AttackEvent attackEvent) => _health.Attack(attackEvent);
+    [SerializeField] private PlayerShield _shield;
+    public bool IsShieldActive => _shield.IsShieldActive;
+    public float ShieldStamina => _shield.CurrentShieldStamina;
+    public float MaxShieldStamina => _shield.MaxShieldStamina;
+    public bool IsStaminaDepleted => _shield.IsStaminaDepleted;
+    
     
     [Header("References")]
     [SerializeField] private Rigidbody2D _rigidbody2D;
@@ -55,17 +77,19 @@ public class PlayerController : Controller
     public event OnInputEvent OnCrouchInputEvent;
     public event OnInputEvent OnAimInputEvent; 
     public event OnInputEvent OnShootInputEvent;
-    public event OnInputEvent OnThrowInputEvent;
     public event OnInputEvent OnReloadInputEvent;
+    public event OnInputEvent OnChangeWeaponInputEvent;
+    public event OnInputEvent OnShieldInputEvent;
     
     private void OnMoveInput(InputAction.CallbackContext context) => OnMoveInputEvent?.Invoke(context);
     private void OnJumpInput(InputAction.CallbackContext context) => OnJumpInputEvent?.Invoke(context);
     private void OnCrouchInput(InputAction.CallbackContext context) => OnCrouchInputEvent?.Invoke(context);
     private void OnAimInput(InputAction.CallbackContext context) => OnAimInputEvent?.Invoke(context);
     private void OnShootInput(InputAction.CallbackContext context) => OnShootInputEvent?.Invoke(context);
-    private void OnThrowInput(InputAction.CallbackContext context) => OnThrowInputEvent?.Invoke(context);
     private void OnReloadInput(InputAction.CallbackContext context) => OnReloadInputEvent?.Invoke(context);
-
+    private void OnChangeWeaponInput(InputAction.CallbackContext context) => OnChangeWeaponInputEvent?.Invoke(context);
+    private void OnShieldInput(InputAction.CallbackContext context) => OnShieldInputEvent?.Invoke(context);
+    
     private void Awake()
     {
         _controls = new PlayerControls();
@@ -82,11 +106,13 @@ public class PlayerController : Controller
         _controls.Gameplay.Aim.canceled += OnAimInput;
         _controls.Gameplay.Shoot.performed += OnShootInput;
         _controls.Gameplay.Shoot.canceled += OnShootInput;
-        _controls.Gameplay.Throw.performed += OnThrowInput;
-        _controls.Gameplay.Throw.canceled += OnThrowInput;
         _controls.Gameplay.Reload.performed += OnReloadInput;
         _controls.Gameplay.Reload.canceled += OnReloadInput;
-
+        _controls.Gameplay.ChangeWeapon.performed += OnChangeWeaponInput;
+        _controls.Gameplay.ChangeWeapon.canceled += OnChangeWeaponInput;
+        _controls.Gameplay.Shield.performed += OnShieldInput;
+        _controls.Gameplay.Shield.canceled += OnShieldInput;
+        
         _features = new List<Feature>();
         _features.Add(_groundCheck);
         _features.Add(_movement);
@@ -97,6 +123,8 @@ public class PlayerController : Controller
         _features.Add(_handle);
         _features.Add(_shooting);
         _features.Add(_bomb);
+        _features.Add(_health);
+        _features.Add(_shield);
 
         _controls.Disable();
     }

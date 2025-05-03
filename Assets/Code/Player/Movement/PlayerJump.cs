@@ -23,7 +23,7 @@ public class PlayerJump : Feature
     [Header("Runtime")] 
     [SerializeField] private bool _onDeparture;
     public bool OnDeparture => _onDeparture;
-    public bool CanJump => !_playerController.IsCrouching;
+    public bool CanJump => !_playerController.IsCrouching && !_playerController.IsThrowing;
 
     public void OnJumpInput(InputAction.CallbackContext context)
     {

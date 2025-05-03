@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Enemy
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -13,17 +14,17 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - PHANTOM
   - GROUND
   - 
   - PLAYER
   - ENEMY
   - 
-  - 
+  - SHIELD
   - BULLET
   - BOMB
   - 
-  - 
+  - EXPLOSION
   - 
   - 
   - 

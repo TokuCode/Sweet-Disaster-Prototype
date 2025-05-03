@@ -9,10 +9,13 @@ public class ThrowUI : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private Image _chargeFillImage;
     
-    [Header("Values")]
+    [Header("Color Values")]
     [SerializeField] private Color _throwReady;
     [SerializeField] private Color _throwing;
     [SerializeField] private Color _throwOnCooldown;
+    
+    [Header("Parameters")]
+    [SerializeField] private float _minimumFillValue;
     
     private void Update()
     {
@@ -25,8 +28,8 @@ public class ThrowUI : MonoBehaviour
         if (_playerController != null)
         {
             if (_playerController.IsThrowing)
-                _chargeFillImage.fillAmount =
-                    Mathf.Clamp01(_playerController.ThrowChargeTimer / _playerController.ThrowChargeTimeSeconds);
+                _chargeFillImage.fillAmount = 
+                    Mathf.Max(Mathf.Clamp01(_playerController.ThrowChargeTimer / _playerController.ThrowChargeTimeSeconds), _minimumFillValue);
             else _chargeFillImage.fillAmount = 1;
         }
     }
